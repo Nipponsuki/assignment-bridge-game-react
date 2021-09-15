@@ -2,11 +2,11 @@ const url = 'https://deckofcardsapi.com/api/deck/new/draw/?count=2';
 
 export interface CardsResponse {
     success: boolean;
-    cards?: Card[] | null;
+    cards?: CardType[] | null;
     deck_id: string;
     remaining: number;
 }
-export interface Card {
+export interface CardType {
     image: string;
     images: string[];
     value: string;

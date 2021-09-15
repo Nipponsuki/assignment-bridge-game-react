@@ -1,65 +1,80 @@
-import getRandomCard, { Card } from 'api/cards';
+import { CardType } from 'api/cards';
+import Balance from 'components/Balance/Balance';
+import Card from 'components/Card/Card';
+import GameState from 'components/GameState/GameState';
+import useCards from 'hooks/useCards';
 import * as React from 'react';
-import { useQuery } from 'react-query';
+
 import useGameStore from 'stores/game';
+import styled from 'styled-components';
 
-const NAMED_VALUES = {
-    KING: 13,
-    QUEEN: 12,
-    JACK: 11,
-    ACE: 1,
-};
+const StyledHomePage = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    width: 100%;
+`;
 
-type NamedValues = 'KING' | 'QUEEN' | 'JACK' | 'ACE';
+const CardsContainer = styled.div`
+    display: flex;
+    position: relative;
+    width: 60%;
+    justify-content: space-between;
+    align-items: center;
+`;
 
-const normalizeCardValue = (value: string): number => {
-    if (value in NAMED_VALUES) {
-        return Number(NAMED_VALUES[value as NamedValues]);
-    }
-
-    return Number(value);
-};
+const ActionButton = styled.button`
+    height: 4rem;
+    width: 8rem;
+    border-radius: 5px;
+    background: var(--primaryColor);
+    border: none;
+    color: #ffffff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    position: absolute;
+    left: 45%;
+`;
 
 const HomePage: React.FC = () => {
-    const {
-        playerScore,
-        computerScore,
-        setPlayerScore,
-        setComputerScore,
-        gameStatus,
-        compareScores,
-    } = useGameStore((state) => state);
-    const { data, isError, isLoading } = useQuery('cards', () => getRandomCard());
+    const { playerScore, computerScore, gameStatus, setGameStatus } = useGameStore(
+        (state) => state,
+    );
+
+    const { data, refetch } = useCards();
     console.log(playerScore, computerScore, gameStatus);
 
     return (
-        <>
-            <h1>{playerScore}</h1>
-            <h1>{computerScore}</h1>
-            <h1>{gameStatus}</h1>
-            {isError && <p>errror</p>}
-            {isLoading && <p>loading</p>}
-            {data &&
-                data.cards?.map((card: Card) => (
-                    <button
-                        disabled={gameStatus !== 'initial'}
-                        type="button"
-                        key={card.code}
+        <StyledHomePage>
+            <Balance />
+            <GameState />
+
+            <CardsContainer>
+                {data && data.cards?.map((card: CardType) => <Card key={card.code} card={card} />)}
+
+                {gameStatus === 'initial' && (
+                    <ActionButton
                         onClick={() => {
-                            setPlayerScore(normalizeCardValue(card.value));
-                            setComputerScore(
-                                normalizeCardValue(
-                                    data.cards?.find((item) => item.code !== card.code)?.value ??
-                                        '',
-                                ),
-                            );
-                            compareScores();
+                            setGameStatus('isStarted');
                         }}
                     >
-                        {card.value}
-                    </button>
-                ))}
-        </>
+                        Play
+                    </ActionButton>
+                )}
+
+                {gameStatus !== 'initial' && gameStatus !== 'isStarted' && (
+                    <ActionButton
+                        onClick={() => {
+                            setGameStatus('initial');
+                            refetch();
+                        }}
+                    >
+                        Again
+                    </ActionButton>
+                )}
+            </CardsContainer>
+        </StyledHomePage>
     );
 };
 
