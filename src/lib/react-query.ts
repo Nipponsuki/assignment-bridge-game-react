@@ -1,5 +1,13 @@
-import { QueryClient } from 'react-query';
+import { QueryClient, DefaultOptions } from 'react-query';
 
-const queryClient = new QueryClient();
+const queryConfig: DefaultOptions = {
+    queries: {
+        useErrorBoundary: true,
+        refetchOnWindowFocus: false,
+        retry: false,
+    },
+};
+
+const queryClient = new QueryClient({ defaultOptions: queryConfig });
 
 export default queryClient;

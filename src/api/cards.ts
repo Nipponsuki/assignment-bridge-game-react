@@ -1,6 +1,6 @@
-const url = 'https://deckofcardsapi.com/api/deck/new/draw/?count=1';
+const url = 'https://deckofcardsapi.com/api/deck/new/draw/?count=2';
 
-export interface CardResponse {
+export interface CardsResponse {
     success: boolean;
     cards?: Card[] | null;
     deck_id: string;
@@ -8,18 +8,19 @@ export interface CardResponse {
 }
 export interface Card {
     image: string;
+    images: string[];
     value: string;
     suit: string;
     code: string;
 }
 
-const getRandomCard = async (): Promise<CardResponse> => {
+const getRandomCard = async (): Promise<CardsResponse> => {
     const query = {
         method: 'GET',
     };
     const response = await fetch(url, query);
     const json = await response.json();
-    return json.cards[0];
+    return json;
 };
 
 export default getRandomCard;

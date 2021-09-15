@@ -20,12 +20,6 @@ const GlobalStyles = createGlobalStyle`
   -moz-osx-font-smoothing: grayscale;
   }
 
-  body {
-    background-color: red;
-    
-  }
-
- 
 `;
 
 export default GlobalStyles;

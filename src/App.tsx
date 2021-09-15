@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ReactQueryDevtools } from 'react-query-devtools';
 import { QueryClientProvider } from 'react-query';
 
 import Routes from 'routes/Routes';
@@ -13,7 +12,6 @@ const App: React.FC = () => {
             <BrowserRouter>
                 <GlobalStyles />
                 <Routes />
-                <ReactQueryDevtools />
             </BrowserRouter>
         </QueryClientProvider>
     );
