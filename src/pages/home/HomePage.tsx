@@ -4,6 +4,8 @@ import Card from 'components/Card/Card';
 import GameInfo from 'components/GameInfo/GameInfo';
 import useCards from 'hooks/useCards';
 import * as React from 'react';
+import { Redirect } from 'react-router';
+import useAuth from 'stores/auth';
 
 import useGameStore from 'stores/game';
 import styled from 'styled-components';
@@ -26,7 +28,6 @@ const CardsContainer = styled.div`
 
 const ActionButton = styled.button`
     height: 4rem;
-    width: 8rem;
     border-radius: 5px;
     background: var(--primaryColor);
     border: none;
@@ -34,46 +35,50 @@ const ActionButton = styled.button`
     font-size: 1.8rem;
     cursor: pointer;
     position: absolute;
-    left: 45%;
+    width: 15rem;
+    left: 40%;
+
+    &:hover {
+        background-color: #207567;
+    }
 `;
 
 const HomePage: React.FC = () => {
-    const { playerScore, computerScore, gameStatus, setGameStatus } = useGameStore(
-        (state) => state,
-    );
+    const { gameStatus, setGameStatus, withdraw } = useGameStore((state) => state);
 
-    const { data, refetch } = useCards();
-    console.log(playerScore, computerScore, gameStatus);
+    const { data, refetch, isFetched } = useCards();
+    const { user } = useAuth();
+
+    const startGame = () => {
+        setGameStatus('isStarted');
+        withdraw();
+    };
+
+    const resetGame = () => {
+        setGameStatus('initial');
+        refetch();
+    };
+
+    if (!user) {
+        <Redirect to="/login" />;
+    }
 
     return (
         <StyledHomePage>
             <Balance />
             <GameInfo />
-
-            <CardsContainer>
-                {data && data.cards?.map((card: CardType) => <Card key={card.code} card={card} />)}
-
-                {gameStatus === 'initial' && (
-                    <ActionButton
-                        onClick={() => {
-                            setGameStatus('isStarted');
-                        }}
-                    >
-                        Play
-                    </ActionButton>
-                )}
-
-                {gameStatus !== 'initial' && gameStatus !== 'isStarted' && (
-                    <ActionButton
-                        onClick={() => {
-                            setGameStatus('initial');
-                            refetch();
-                        }}
-                    >
-                        Again
-                    </ActionButton>
-                )}
-            </CardsContainer>
+            {isFetched && (
+                <CardsContainer>
+                    {gameStatus === 'initial' && (
+                        <ActionButton onClick={startGame}>Играть</ActionButton>
+                    )}
+                    {gameStatus !== 'initial' && gameStatus !== 'isStarted' && (
+                        <ActionButton onClick={resetGame}>Сыграть еще</ActionButton>
+                    )}
+                    {data &&
+                        data.cards?.map((card: CardType) => <Card key={card.code} card={card} />)}
+                </CardsContainer>
+            )}
         </StyledHomePage>
     );
 };

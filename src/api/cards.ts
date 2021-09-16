@@ -8,7 +8,7 @@ export interface CardsResponse {
 }
 export interface CardType {
     image: string;
-    images: string[];
+    images: string;
     value: string;
     suit: string;
     code: string;

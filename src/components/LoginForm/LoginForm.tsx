@@ -2,6 +2,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import useAuth from 'stores/auth';
+import { useHistory } from 'react-router';
 
 interface IFormInput {
     name: string;
@@ -66,23 +68,37 @@ const SumbitButton = styled.button`
     font-weight: bold;
     transition: background-color 0.3s ease;
 
+    &:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     &:hover {
         background-color: #207567;
     }
 `;
 
 const LoginForm: React.FC = () => {
+    const history = useHistory();
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
+        reset,
     } = useForm<IFormInput>();
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        console.log(data);
+
+    const { login } = useAuth();
+
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        login(data.name);
+        reset();
+        history.push('/');
     };
+
     return (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            <FormHeading>Sign in to your account</FormHeading>
+            <FormHeading>Sign In to your account</FormHeading>
             <InputWrapper>
                 <StyledLabel htmlFor="name">Name</StyledLabel>
                 <StyledInput

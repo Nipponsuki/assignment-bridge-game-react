@@ -1,6 +1,7 @@
 import * as React from 'react';
-import useGameStore from 'stores/game';
 import styled from 'styled-components';
+
+import useGameStore from 'stores/game';
 
 const StyledBalance = styled.div`
     background: #d0e1f9;
@@ -17,6 +18,7 @@ const StyledBalance = styled.div`
 
 const Balance: React.FC = () => {
     const { balance } = useGameStore((state) => state);
+
     return (
         <StyledBalance>
             <span>Баланс:{balance}</span>

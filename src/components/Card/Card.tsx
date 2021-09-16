@@ -1,8 +1,10 @@
-import { CardType } from 'api/cards';
-import useCards from 'hooks/useCards';
 import * as React from 'react';
-import useGameStore, { GameState } from 'stores/game';
 import styled from 'styled-components';
+
+import useCards from 'hooks/useCards';
+import useGameStore from 'stores/game';
+
+import { CardType } from 'api/cards';
 import backCardImage from 'assets/images/back.png';
 
 const StyledCard = styled.button`
@@ -32,11 +34,11 @@ const NAMED_VALUES = {
     ACE: 1,
 };
 
-type NamedValues = 'KING' | 'QUEEN' | 'JACK' | 'ACE';
+type NamedValuesType = 'KING' | 'QUEEN' | 'JACK' | 'ACE';
 
 const normalizeCardValue = (value: string): number => {
     if (value in NAMED_VALUES) {
-        return Number(NAMED_VALUES[value as NamedValues]);
+        return Number(NAMED_VALUES[value as NamedValuesType]);
     }
 
     return Number(value);
@@ -47,10 +49,21 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ card }: CardProps) => {
-    const { setPlayerScore, setComputerScore, gameStatus, compareScores, withdraw } = useGameStore(
-        (state: GameState) => state,
+    const { setPlayerScore, setComputerScore, gameStatus, compareScores } = useGameStore(
+        (state) => state,
     );
     const { data } = useCards();
+
+    const onCardSelect = () => {
+        setPlayerScore(normalizeCardValue(card.value));
+        setComputerScore(
+            normalizeCardValue(
+                (data && data.cards?.find((item) => item.code !== card.code)?.value) ?? '',
+            ),
+        );
+
+        compareScores();
+    };
 
     return (
         <StyledCard
@@ -58,16 +71,7 @@ const Card: React.FC<CardProps> = ({ card }: CardProps) => {
             aria-label="select card"
             type="button"
             key={card.code}
-            onClick={() => {
-                withdraw();
-                setPlayerScore(normalizeCardValue(card.value));
-                setComputerScore(
-                    normalizeCardValue(
-                        (data && data.cards?.find((item) => item.code !== card.code)?.value) ?? '',
-                    ),
-                );
-                compareScores();
-            }}
+            onClick={onCardSelect}
         >
             <img
                 src={

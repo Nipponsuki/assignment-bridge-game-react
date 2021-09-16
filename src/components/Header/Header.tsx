@@ -2,10 +2,7 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const LINKS = [
-    { id: 1, to: '/', label: 'Bridge' },
-    { id: 2, to: '/login', label: 'Login' },
-];
+import useAuth from 'stores/auth';
 
 const StyledHeader = styled.header`
     width: 100%;
@@ -33,14 +30,22 @@ const StyledHeader = styled.header`
 `;
 
 const Header: React.FC = () => {
+    const { user, logout } = useAuth();
     return (
         <StyledHeader>
             <nav>
-                {LINKS.map((link) => (
-                    <NavLink to={link.to} key={link.id} activeClassName="active" exact>
-                        <span>{link.label}</span>
+                <NavLink to="/" activeClassName="active" exact>
+                    <span>Bridge</span>
+                </NavLink>
+                {user ? (
+                    <NavLink to="/login" activeClassName="active" exact onClick={() => logout()}>
+                        <span>Sign Out</span>
                     </NavLink>
-                ))}
+                ) : (
+                    <NavLink to="/login" activeClassName="active" exact>
+                        <span>Sign In</span>
+                    </NavLink>
+                )}
             </nav>
         </StyledHeader>
     );
