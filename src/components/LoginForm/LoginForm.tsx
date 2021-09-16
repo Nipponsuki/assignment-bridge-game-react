@@ -111,7 +111,7 @@ const LoginForm: React.FC = () => {
             <InputWrapper>
                 <StyledLabel htmlFor="password">Password</StyledLabel>
                 <StyledInput
-                    {...register('password', { required: true, pattern: /^12345$/ })}
+                    {...register('password', { required: true, pattern: /^123456$/ })}
                     type="password"
                 />
                 <ErrorMessage>{errors.password && 'Неверный пароль'}</ErrorMessage>
