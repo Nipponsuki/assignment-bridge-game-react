@@ -46,7 +46,7 @@ const GAME_STATES = {
     isStarted: <InitialState />,
 };
 
-const StyledGameState = styled.div`
+const StyledGameInfo = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -63,9 +63,9 @@ const StyledGameState = styled.div`
     }
 `;
 
-const GameState: React.FC = () => {
+const GameInfo: React.FC = () => {
     const { gameStatus } = useGameStore((state) => state);
-    return <StyledGameState>{GAME_STATES[gameStatus as GameStatus]}</StyledGameState>;
+    return <StyledGameInfo>{GAME_STATES[gameStatus as GameStatus]}</StyledGameInfo>;
 };
 
-export default GameState;
+export default GameInfo;

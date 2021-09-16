@@ -1,7 +1,7 @@
 import { CardType } from 'api/cards';
 import Balance from 'components/Balance/Balance';
 import Card from 'components/Card/Card';
-import GameState from 'components/GameState/GameState';
+import GameInfo from 'components/GameInfo/GameInfo';
 import useCards from 'hooks/useCards';
 import * as React from 'react';
 
@@ -48,7 +48,7 @@ const HomePage: React.FC = () => {
     return (
         <StyledHomePage>
             <Balance />
-            <GameState />
+            <GameInfo />
 
             <CardsContainer>
                 {data && data.cards?.map((card: CardType) => <Card key={card.code} card={card} />)}

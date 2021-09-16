@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from 'pages/home/HomePage';
 import Header from 'components/Header/Header';
 import styled from 'styled-components';
+import LoginPage from 'pages/login/LoginPage';
 
 const ContentWrapper = styled.main`
     display: flex;
@@ -17,6 +18,7 @@ const Routes: React.FC = () => {
             <ContentWrapper>
                 <Switch>
                     <Route exact path="/" component={HomePage} />
+                    <Route path="/login" component={LoginPage} />
                 </Switch>
             </ContentWrapper>
         </>

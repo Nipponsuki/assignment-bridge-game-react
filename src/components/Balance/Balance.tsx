@@ -3,7 +3,6 @@ import useGameStore from 'stores/game';
 import styled from 'styled-components';
 
 const StyledBalance = styled.div`
-    width: 100%;
     background: #d0e1f9;
     color: #000000;
     padding: 1rem 2rem;
