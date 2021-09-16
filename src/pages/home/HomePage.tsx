@@ -4,8 +4,6 @@ import Card from 'components/Card/Card';
 import GameInfo from 'components/GameInfo/GameInfo';
 import useCards from 'hooks/useCards';
 import * as React from 'react';
-import { Redirect } from 'react-router';
-import useAuth from 'stores/auth';
 
 import useGameStore from 'stores/game';
 import styled from 'styled-components';
@@ -36,7 +34,7 @@ const ActionButton = styled.button`
     cursor: pointer;
     position: absolute;
     width: 15rem;
-    left: 40%;
+    left: 43%;
 
     &:hover {
         background-color: #207567;
@@ -47,7 +45,6 @@ const HomePage: React.FC = () => {
     const { gameStatus, setGameStatus, withdraw } = useGameStore((state) => state);
 
     const { data, refetch, isFetched } = useCards();
-    const { user } = useAuth();
 
     const startGame = () => {
         setGameStatus('isStarted');
@@ -58,10 +55,6 @@ const HomePage: React.FC = () => {
         setGameStatus('initial');
         refetch();
     };
-
-    if (!user) {
-        <Redirect to="/login" />;
-    }
 
     return (
         <StyledHomePage>

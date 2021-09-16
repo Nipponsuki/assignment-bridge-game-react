@@ -30,7 +30,7 @@ const StyledHeader = styled.header`
 `;
 
 const Header: React.FC = () => {
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuth((state) => state);
     return (
         <StyledHeader>
             <nav>

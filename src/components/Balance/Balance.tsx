@@ -7,7 +7,7 @@ const StyledBalance = styled.div`
     background: #d0e1f9;
     color: #000000;
     padding: 1rem 2rem;
-    font-size: 1.8rem;
+    font-size: 2rem;
     border-radius: 5px;
     margin: 1rem auto;
     font-weight: bold;

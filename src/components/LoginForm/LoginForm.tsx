@@ -88,7 +88,7 @@ const LoginForm: React.FC = () => {
         reset,
     } = useForm<IFormInput>();
 
-    const { login } = useAuth();
+    const { login } = useAuth((state) => state);
 
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
         login(data.name);
